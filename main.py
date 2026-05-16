@@ -80,18 +80,20 @@ def main():
       options.timeout = 10
 
     headers = {}
-    if not options.useragent:
-      headers["User-Agent"] = conf.HEADERS["User-Agent"]
-    else:
-      headers["User-Agent"] = options.useragent
-    for header in options.header:
-      key, value = header.split(": ")
-      headers[key] = value
+    headers["User-Agent"] = conf.HEADERS["User-Agent"]
 
     # Read configuration headers
     for header in conf.HEADERS:
         headers[header] = conf.HEADERS[header]
 
+    for header in options.header:
+      key, value = header.split(": ")
+      headers[key] = value    
+
+    if options.useragent:
+      headers["User-Agent"] = options.useragent
+
+    print(headers)
     g = GRAPHW00F(follow_redirects=options.followredirect,
                   headers=headers,
                   cookies=conf.COOKIES,
